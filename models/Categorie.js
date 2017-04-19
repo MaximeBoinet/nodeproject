@@ -3,7 +3,7 @@ const timestamps = require('mongoose-timestamps');
 
 module.exports = (api) => {
     const schema = new Schema({
-        labellecategorie: {
+        labelcategorie: {
             type: String,
             required: true
         }
