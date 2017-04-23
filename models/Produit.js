@@ -12,16 +12,13 @@ module.exports = (api) => {
             required: true
         },
         note: {
-            type: Number,
-            required: false
+            type: Number
         },
         datemisenvente: {
-            type: Date,
-            required: true
+            type: Date
         },
         datevendu: {
-            type: Date,
-            required: false
+            type: Date
         },
         labelle: {
             type: String,
@@ -38,12 +35,12 @@ module.exports = (api) => {
         },
         acheteur: {
             type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: false
+            ref: 'User'
         },
         categorie: [{
             type: Schema.Types.ObjectId,
-            ref: 'Categorie'
+            ref: 'Categorie',
+            required: true
         }]
     });
 

@@ -25,16 +25,13 @@ module.exports = (api) => {
           required: true
         },
         rue: {
-            type: String,
-            required: false
+            type: String
         },
         ville: {
-            type: String,
-            required: false
+            type: String
         },
         pays: {
-            type: String,
-            required: false
+            type: String
         }
     });
 
