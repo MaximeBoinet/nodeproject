@@ -23,6 +23,7 @@
     "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.9.5",
     "mongoose-timestamps": "0.0.1",
+    "mongoose-ttl": "0.0.3",
     "mysql": "^2.13.0",
     "nodemon": "^1.11.0",
     "path": "^0.12.7",
