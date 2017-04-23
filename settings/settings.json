@@ -3,4 +3,7 @@
   "db": {
       "url": "mongodb://localhost:27017/enchere"
   }
+  "security": {
+    "salt": "@v~7Qé€E$¤r%&6^{m'°3S1xµ§"
+  }
 }
