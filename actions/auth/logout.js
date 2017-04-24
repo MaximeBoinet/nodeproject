@@ -2,7 +2,18 @@ module.exports = (api) => {
     const Token = api.models.Token;
 
     return function logout(req, res, next) {
-        // TODO.
-        return next();
+          Token.findOneAndRemove({
+            userId: req.userId,
+          }, (err, data) => {
+              if (err) {
+                  return res.status(500).send(err);
+              }
+
+              if (!data) {
+                  return res.status(204).send();
+              }
+
+              return res.send(data);
+          });
     };
 };

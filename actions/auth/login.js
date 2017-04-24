@@ -26,7 +26,7 @@ module.exports = (api) => {
                 if (err) {
                     return res.status(500).send(err);
                 }
-
+                
                 jwt.sign({
                         exp: Math.floor(Date.now() / 1000) + (60 * 60),
                         tokenId: token._id.toString()
