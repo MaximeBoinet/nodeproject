@@ -8,8 +8,7 @@ module.exports = (api) => {
             required: true
         },
         date: {
-            type: Date,
-            required: true
+            type: Date
         },
         encherisseur: {
             type: Schema.Types.ObjectId,

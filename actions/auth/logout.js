@@ -12,7 +12,8 @@ module.exports = (api) => {
               if (!data) {
                   return res.status(204).send();
               }
-
+              req.userId = null;
+              
               return res.send(data);
           });
     };

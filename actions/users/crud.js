@@ -57,13 +57,16 @@ module.exports = (api) => {
     }
 
     function update(req, res, next) {
+        if (req.userId != req.params.id) {
+          return res.status(401).send('cant.modify.another.user');
+        }
         User.findByIdAndUpdate(req.params.id, req.body, (err, data) => {
             if (err) {
                 return res.status(500).send(err);
             }
 
             if (!data) {
-                return res.status(204).send()
+                return res.status(204).send();
             }
             return res.send(data);
         });
