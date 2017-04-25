@@ -6,6 +6,11 @@ module.exports = (api) => {
         const userId = req.userId;
 
         let produit = new Produit(req.body);
+
+        if (produit.produitprix <= 0) {
+          return res.status(401).send('price.cant.be.less.or.equal.zero');
+        }
+
         produit.vendeur = userId;
         produit.datemisenvente = Date.now();
 
@@ -38,12 +43,14 @@ module.exports = (api) => {
             if (!data || data.length == 0) {
                 return res.status(204).send(data)
             }
+
+            api.middlewares.cache.set('Produit', data, req.originalUrl);
             return res.send(data);
         });
     }
 
     function update(req, res, next) {
-        Produit.findByIdAndUpdate(req.params.id, req.body, (err, data) => {
+        Produit.findById(req.params.id, (err, data) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -52,12 +59,22 @@ module.exports = (api) => {
                 return res.status(204).send()
             }
 
-            return res.send(data);
+            if (data.vendeur != req.userId) {
+              return res.status(401).send('can.only.be.updated.by.owner');
+            }
+
+            data.update(req.body, (err, data) => {
+              if (err) {
+                return res.status(500).send();
+              }
+
+              return res.send(data);
+            });
         });
     }
 
     function remove(req, res, next) {
-        Produit.findByIdAndRemove(req.params.id, (err, data) => {
+        Produit.findById(req.params.id, (err, data) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -66,7 +83,18 @@ module.exports = (api) => {
                 return res.status(204).send();
             }
 
-            return res.send(data);
+            if (data.vendeur != req.userId) {
+              return res.status(401).send('can.only.be.removed.by.owner');
+            }
+
+            data.remove((err, data) => {
+              if (err) {
+                return res.status(500).send();
+              }
+
+              return res.send(data);
+            });
+
         });
     }
 

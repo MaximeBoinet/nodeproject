@@ -25,6 +25,7 @@ module.exports = (api) => {
                 }
 
                 req.userId = token.userId;
+                
                 return next();
             });
         });

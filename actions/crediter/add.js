@@ -13,16 +13,13 @@ module.exports = (api) => {
 
       user.usercredit = user.usercredit + req.body.credit;
 
-      User.findByIdAndUpdate(user._id, user, (err, data) => {
-        if (err) {
-          return res.status(500).send(err);
+      user.save((err,data) => {
+        if (err){
+          return res.status(500).send();
         }
 
-        if (!data) {
-          return res.status(204).send();
-        }
-        return res.send(data);
-      });
+        return res.status(204).send(data);
+      })
     });
   }
 }
