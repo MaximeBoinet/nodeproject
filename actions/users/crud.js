@@ -51,7 +51,10 @@ module.exports = (api) => {
                     return res.status(204).send(data)
                 }
                 api.middlewares.cache.set('User', data, req.url);
-                return res.send(data);
+                //return res.send(data);
+                res.render("/Users/AlkRox/Documents/ESGI/Projet/node/sitenode/index.html", {
+                  data: data
+                })
             });
         }
     }
