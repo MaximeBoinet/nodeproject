@@ -49,7 +49,7 @@ module.exports = (api) => {
               if (err) {
                 return res.status(500).send(err);
               }
-              return res.status(204).send(data);
+              return res.send(data);
             });
           }
 
@@ -88,7 +88,7 @@ module.exports = (api) => {
                       return res.status(500).send(err);
                     }
 
-                    return res.status(204).send(datae);
+                    return res.send(datae);
                   });
                 });
               });

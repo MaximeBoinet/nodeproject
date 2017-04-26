@@ -73,9 +73,13 @@ module.exports = (api) => {
     }
 
     function remove(req, res, next) {
+        if (req.userId != req.params.id) {
+          return res.status(401).send('cant.delete.this.account');
+        }
+
         User.findByIdAndRemove(req.params.id, (err, data) => {
             if (err) {
-                return res.status(500).send(err);
+                return res.status(500).send();
             }
             if (!data) {
                 return res.status(204).send();

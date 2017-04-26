@@ -18,7 +18,7 @@ module.exports = (api) => {
           return res.status(500).send();
         }
 
-        return res.status(204).send(data);
+        return res.send(data);
       })
     });
   }

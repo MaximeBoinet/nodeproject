@@ -56,7 +56,7 @@ module.exports = (api) => {
                   return res.status(500).send();
                 }
 
-                return res.status(204).send(prod);
+                return res.send(prod);
               });
             });
           })

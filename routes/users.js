@@ -18,6 +18,7 @@ module.exports = (api) => {
     api.actions.users.update);
 
   router.delete('/:id',
+    api.middlewares.ensureAuthenticated,
     api.actions.users.remove);
 
   return router;

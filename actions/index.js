@@ -4,6 +4,7 @@ module.exports = (api) => {
       users: require('./users/crud')(api),
       produits: require('./produits/crud')(api),
       crediter: require('./crediter')(api),
-      encheres: require('./encheres')(api)
+      encheres: require('./encheres')(api),
+      avis: require('./avis/crud')(api)
     };
 };
