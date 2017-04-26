@@ -8,8 +8,7 @@ module.exports = (api) => {
     return function login(req, res, next) {
         User.findOne({
             mail: req.body.mail,
-            //TODO REMETTRE SHA1
-            mdp: req.body.mdp
+            mdp: sha1(req.body.mdp)
         }, (err, user) => {
             if (err) {
                 return res.status(500).send(err);
@@ -26,7 +25,7 @@ module.exports = (api) => {
                 if (err) {
                     return res.status(500).send(err);
                 }
-                
+
                 jwt.sign({
                         exp: Math.floor(Date.now() / 1000) + (60 * 60),
                         tokenId: token._id.toString()
