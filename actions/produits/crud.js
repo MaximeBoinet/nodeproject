@@ -49,6 +49,34 @@ module.exports = (api) => {
         });
     }
 
+    function findAllSelled(req, res, next) {
+        User.find({
+          _id: req.userId,
+          isgbaystaff: true,
+        }, (err, data) =>{
+          if (err) {
+            return res.status(500).send();
+          }
+
+          if (!data) {
+            return res.status(401).send();
+          }
+
+          Produit.find({
+            datevendu: {$ne:null},
+          }, (err, data) => {
+              if (err) {
+                  return res.status(500).send(err);
+              }
+              if (!data || data.length == 0) {
+                  return res.status(204).send(data)
+              }
+
+              return res.send(data);
+          });
+        })
+    }
+
     function update(req, res, next) {
         Produit.findById(req.params.id, (err, data) => {
             if (err) {
@@ -102,6 +130,7 @@ module.exports = (api) => {
         create,
         findOne,
         findAll,
+        findAllSelled,
         update,
         remove
     };
