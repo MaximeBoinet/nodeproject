@@ -5,11 +5,11 @@ module.exports = (api) => {
     api.middlewares.cache.get,
     api.actions.users.findAll);
 
-  router.get('/:id',
-    api.actions.users.findOne);
-
   router.get('/seller',
     api.actions.users.findAllSeller);
+
+  router.get('/:id',
+    api.actions.users.findOne);
 
   router.post('/',
     api.middlewares.cache.clean('User'),

@@ -10,16 +10,24 @@ module.exports = (api) => {
         if (produit.produitprix <= 0) {
           return res.status(401).send('price.cant.be.less.or.equal.zero');
         }
+        User.findOne(req.userId, (err, user) => {
+          if (err) {
+            return res.status(500).send();
+          }
 
-        produit.vendeur = userId;
-        produit.datemisenvente = Date.now();
+          user.isVendor = true;
+          user.save((err, user) => {
+            produit.vendeur = userId;
+            produit.datemisenvente = Date.now();
 
-        produit.save((err, data) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+            produit.save((err, data) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
 
-            return res.send(data);
+                return res.send(data);
+            });
+          })
         });
     };
 

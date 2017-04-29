@@ -76,12 +76,12 @@ module.exports = (api) => {
               isVendor: true,
             },(err, data) => {
                 if (err) {
-                    return res.status(500).send(err);
+                    return res.status(500).send();
                 }
                 if (!data || data.length == 0) {
                     return res.status(204).send(data)
                 }
-                api.middlewares.cache.set('User', data, req.url);
+
                 return res.send(data);
             });
         }
