@@ -17,7 +17,18 @@ module.exports = (api) => {
             if (found) {
                 return res.status(401).send('email.already.exists')
             }
-            return saveUser();
+            User.count((err, count) => {
+                if (err) {
+                    return res.status(500).send();
+                }
+
+                if (count == 0) {
+                    user.isgbaystaff = true;
+                    return saveUser();
+                }
+
+                return saveUser();
+            })
         });
 
         function saveUser() {
@@ -97,6 +108,39 @@ module.exports = (api) => {
           return res.status(401).send('cant.delete.this.account');
         }
 
+        Produit.find({
+          vendeur: req.userId,
+        }, (err, produit) => {
+          if (err) {
+            return res.status(500).send();
+          }
+
+          produit.forEach(Enchere.find({
+            produit : this._id,
+          }, (err, data) => {
+            if (err) {
+              return res.status(500).send();
+            }
+
+            if (data) {
+              User.findById(data.encherisseur, (err, user) => {
+                user.usercredit = user.usercredit + data.montant;
+
+                user.save((err, data) => {
+                  if (err) {
+                    return res.status(500).send();
+                  }
+                })
+              })
+            }
+
+            this.delete((err,data) => {
+              if (err) {
+                return res.status(500).end();
+              }
+            })
+          }), this)
+        })
 
         User.findByIdAndRemove(req.params.id, (err, data) => {
             if (err) {
