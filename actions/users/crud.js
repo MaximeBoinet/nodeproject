@@ -2,6 +2,8 @@ const sha1 = require('sha1');
 
 module.exports = (api) => {
     const User = api.models.User;
+    const Produit = api.models.Produit;
+    const Enchere = api.models.Enchere;
 
     function create(req, res, next) {
         let user = new User(req.body);
@@ -56,6 +58,24 @@ module.exports = (api) => {
         }
     }
 
+    function findAllSeller(req, res, next) {
+        setTimeout(getUsers, 3000);
+        function getUsers() {
+            User.find({
+              isVendor: true,
+            },(err, data) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                if (!data || data.length == 0) {
+                    return res.status(204).send(data)
+                }
+                api.middlewares.cache.set('User', data, req.url);
+                return res.send(data);
+            });
+        }
+    }
+
     function update(req, res, next) {
         if (req.userId != req.params.id) {
           return res.status(401).send('cant.modify.another.user');
@@ -77,6 +97,7 @@ module.exports = (api) => {
           return res.status(401).send('cant.delete.this.account');
         }
 
+
         User.findByIdAndRemove(req.params.id, (err, data) => {
             if (err) {
                 return res.status(500).send();
@@ -92,6 +113,7 @@ module.exports = (api) => {
         create,
         findOne,
         findAll,
+        findAllSeller,
         update,
         remove
     };

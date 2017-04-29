@@ -8,6 +8,9 @@ module.exports = (api) => {
   router.get('/:id',
     api.actions.users.findOne);
 
+  router.get('/seller',
+    api.actions.users.findAllSeller);
+
   router.post('/',
     api.middlewares.cache.clean('User'),
     api.middlewares.bodyParser.json(),

@@ -38,27 +38,41 @@ module.exports = (api) => {
             return res.status(500).send();
           }
 
-          Enchere.findOne({
-            produit: req.params.id,
-          }, (err, data) => {
+          User.findById(produit.vendeur, (err, vendeur) => {
             if (err) {
               return res.status(500).send();
             }
 
-            User.findById(data.encherisseur, (err, user) => {
+            vendeur.usercredit = vendeur.usercredit + produit.produitprix;
+
+            vendeur.save((err, data) => {
               if (err) {
-                return req.status(500).send();
+                return res.status(500).send();
               }
 
-              user.usercredit = user.usercredit + data.montant;
-              user.save((err, data) => {
+              Enchere.findOne({
+                produit: req.params.id,
+              }, (err, data) => {
                 if (err) {
                   return res.status(500).send();
                 }
 
-                return res.send(prod);
-              });
-            });
+                User.findById(data.encherisseur, (err, user) => {
+                  if (err) {
+                    return req.status(500).send();
+                  }
+
+                  user.usercredit = user.usercredit + data.montant;
+                  user.save((err, data) => {
+                    if (err) {
+                      return res.status(500).send();
+                    }
+
+                    return res.send(prod);
+                  });
+                });
+              })
+            })
           })
         })
       })

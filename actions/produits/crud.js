@@ -49,6 +49,38 @@ module.exports = (api) => {
         });
     }
 
+    function findByCat(req, res, next) {
+      Produit.find({
+        categorie: req.params.cat,
+      }, (err, data) => {
+        if (err) {
+          return res.status(500).send();
+        }
+
+        if (!data) {
+          return res.status(204).send();
+        }
+
+        return res.send(data)
+      })
+    }
+
+    function findBySeller(req, res, next) {
+      Produit.find({
+        vendeur: req.params.seller,
+      }, (err, data) => {
+        if (err) {
+          return res.status(500).send();
+        }
+
+        if (!data) {
+          return res.status(204).send();
+        }
+
+        return res.send(data)
+      })
+    }
+
     function findAllSelled(req, res, next) {
         User.find({
           _id: req.userId,
@@ -62,7 +94,23 @@ module.exports = (api) => {
             return res.status(401).send();
           }
 
+          if (req.params.id == null || req.params.id == "") {
+            Produit.find({
+              datevendu: {$ne:null},
+            }, (err, data) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                if (!data || data.length == 0) {
+                    return res.status(204).send(data)
+                }
+
+                return res.send(data);
+            });
+          }
+
           Produit.find({
+            vendeur: req.params.id,
             datevendu: {$ne:null},
           }, (err, data) => {
               if (err) {
@@ -132,6 +180,8 @@ module.exports = (api) => {
         findAll,
         findAllSelled,
         update,
+        findByCat,
+        findBySeller,
         remove
     };
 }
