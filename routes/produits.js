@@ -5,6 +5,9 @@ module.exports = (api) => {
         api.middlewares.cache.get,
         api.actions.produits.findAll);
 
+    router.get('/sorted',
+        api.actions.produits.findAllSorted);
+
     router.get('/selled',
         api.middlewares.ensureAuthenticated,
         api.actions.produits.findAllSelled);
@@ -16,7 +19,7 @@ module.exports = (api) => {
     router.get('/cat/:cat',
         api.actions.produits.findByCat);
 
-    router.get('/sellet/:seller',
+    router.get('/seller/:seller',
         api.actions.produits.findBySeller);
 
     router.get('/:id',

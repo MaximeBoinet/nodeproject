@@ -74,7 +74,7 @@ module.exports = (api) => {
         function getUsers() {
             User.find({
               isVendor: true,
-            },(err, data) => {
+            }, (err, data) => {
                 if (err) {
                     return res.status(500).send();
                 }
@@ -115,7 +115,7 @@ module.exports = (api) => {
             return res.status(500).send();
           }
 
-          produit.forEach(Enchere.find({
+          produit.forEach((data) => {Enchere.find({
             produit : this._id,
           }, (err, data) => {
             if (err) {
@@ -134,12 +134,12 @@ module.exports = (api) => {
               })
             }
 
-            this.delete((err,data) => {
+            data.delete((err,data) => {
               if (err) {
                 return res.status(500).end();
               }
             })
-          }), this)
+          })})
         })
 
         User.findByIdAndRemove(req.params.id, (err, data) => {

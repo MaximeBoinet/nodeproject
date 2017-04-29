@@ -57,6 +57,32 @@ module.exports = (api) => {
         });
     }
 
+    function findAllSorted(req, res, next) {
+        Produit.find((err, data) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            if (!data || data.length == 0) {
+                return res.status(204).send(data)
+            }
+
+            return res.send(data);
+        }).sort({produitprix: 1});
+    }
+
+    function findAllBound(req, res, next) {
+        Produit.find((err, data) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            if (!data || data.length == 0) {
+                return res.status(204).send(data)
+            }
+
+            return res.send(data);
+        }).skip(req.params.offset).limit(req.params.limit);
+    }
+
     function findByCat(req, res, next) {
       Produit.find({
         categorie: req.params.cat,
@@ -187,6 +213,8 @@ module.exports = (api) => {
         findOne,
         findAll,
         findAllSelled,
+        findAllBound,
+        findAllSorted,
         update,
         findByCat,
         findBySeller,
