@@ -147,8 +147,7 @@ module.exports = (api) => {
 
             return res.send(data);
         });
-      })
-    }
+      }
 
     function update(req, res, next) {
         Produit.findById(req.params.id, (err, data) => {
