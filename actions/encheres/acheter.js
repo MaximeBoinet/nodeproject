@@ -9,11 +9,11 @@ module.exports = (api) => {
         return res.status(500).send(err);
       }
 
-      if (!data) {
+      if (!produit) {
         return res.status(204).send();
       }
 
-      if (produit.vendeur == req.userId) {
+      if (produit.vendeur.toString() == req.userId) {
         return res.status(401).send('cant.buy.your.own.product');
       }
 
@@ -29,6 +29,13 @@ module.exports = (api) => {
         if (user.usercredit < produit.produitprix) {
           return res.status(401).send('yon.dont.have.enough.credit');
         }
+
+        user.usercredit = user.usercredit - produit.produitprix;
+        user.save((err, data) => {
+          if (err) {
+            return res.status(500).send();
+          }
+        });
 
         produit.acheteur = req.userId;
         produit.produitenchere = 0;
@@ -57,6 +64,9 @@ module.exports = (api) => {
                   return res.status(500).send();
                 }
 
+                if (!data) {
+                  return res.send(prod);
+                }
                 User.findById(data.encherisseur, (err, user) => {
                   if (err) {
                     return req.status(500).send();

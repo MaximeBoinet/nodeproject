@@ -8,11 +8,13 @@ module.exports = (api) => {
     api.actions.categorie.findOne);
 
   router.post('/',
+    api.middlewares.bodyParser.json(),
     api.middlewares.ensureAuthenticated,
     api.middlewares.ensureGbayStaff,
     api.actions.categorie.create);
 
   router.put('/:id',
+    api.middlewares.bodyParser.json(),
     api.middlewares.ensureAuthenticated,
     api.middlewares.ensureGbayStaff,
     api.actions.categorie.update);

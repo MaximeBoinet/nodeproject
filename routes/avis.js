@@ -13,7 +13,7 @@ module.exports = (api) => {
     api.middlewares.ensureAuthenticated,
     api.actions.avis.findOne);
 
-  router.post('/',
+  router.post('/:id',
     api.middlewares.ensureAuthenticated,
     api.actions.avis.create);
 

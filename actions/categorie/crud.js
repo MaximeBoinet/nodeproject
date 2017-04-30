@@ -4,8 +4,8 @@ module.exports = (api) => {
   function create(req, res, next) {
     let categorie = new Categorie(req.body);
 
-    if (categorie.labellecategorie.length <= 0) {
-      return res.status(403).send('categorie.cant.be.empty');
+    if (!categorie || categorie.labellecategorie.length <= 0) {
+     return res.status(403).send('categorie.cant.be.empty');
     }
 
     Categorie.findOne({
@@ -15,7 +15,7 @@ module.exports = (api) => {
         return res.status(500).send();
       }
 
-      if (data) {
+      if (cat) {
         return res.status(403).send('this.categorie.already.exist');
       }
 
@@ -54,7 +54,7 @@ module.exports = (api) => {
     }
 
   function update(req, res, next) {
-    Produit.findById(req.params.id, (err, data) => {
+    Categorie.findByIdAndUpdate(req.params.id, req.body, (err, data) => {
         if (err) {
             return res.status(500).send(err);
         }
@@ -62,14 +62,8 @@ module.exports = (api) => {
         if (!data) {
             return res.status(204).send()
         }
-
-        data.update(req.body, (err, data) => {
-          if (err) {
-            return res.status(500).send();
-          }
-
-          return res.send(data);
-        });
+        
+        return res.send(data);
     });
   }
 

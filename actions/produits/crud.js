@@ -10,6 +10,7 @@ module.exports = (api) => {
         if (produit.produitprix <= 0) {
           return res.status(403).send('price.cant.be.less.or.equal.zero');
         }
+
         User.findOne(req.userId, (err, user) => {
           if (err) {
             return res.status(500).send();
@@ -83,7 +84,7 @@ module.exports = (api) => {
             }
 
             return res.send(data);
-        }).skip(req.params.offset).limit(req.params.limit);
+        }).skip(Number(req.params.offset)).limit(Number(req.params.limit));
     }
 
     function findByCat(req, res, next) {
@@ -150,7 +151,7 @@ module.exports = (api) => {
       }
 
     function update(req, res, next) {
-        Produit.findById(req.params.id, (err, data) => {
+        Produit.findByIdAndUpdate(req.params.id, req.body, (err, data) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -159,17 +160,11 @@ module.exports = (api) => {
                 return res.status(204).send()
             }
 
-            if (data.vendeur != req.userId) {
+            if (data.vendeur.toString() != req.userId) {
               return res.status(401).send('can.only.be.updated.by.owner');
             }
 
-            data.update(req.body, (err, data) => {
-              if (err) {
-                return res.status(500).send();
-              }
-
-              return res.send(data);
-            });
+            return res.send(data);
         });
     }
 
@@ -183,7 +178,7 @@ module.exports = (api) => {
                 return res.status(204).send();
             }
 
-            if (data.vendeur != req.userId) {
+            if (data.vendeur.toString() != req.userId) {
               return res.status(401).send('can.only.be.removed.by.owner');
             }
 

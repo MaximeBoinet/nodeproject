@@ -1,9 +1,10 @@
 module.exports = (api) => {
   const User = api.models.User;
   const Enchere = api.models.Enchere;
+  const Produit = api.models.Produit;
 
   return function encherir(req, res, next) {
-    Produit.findById(req.body.produit, (err, data) => {
+    Produit.findById(req.params.id, (err, data) => {
       if (err) {
         return res.status(500).send();
       }
@@ -12,12 +13,12 @@ module.exports = (api) => {
         return res.status(401).send('product.does.not.exist');
       }
 
-      if (data.vendeur == req.userId) {
+      if (data.vendeur.toString() == req.userId) {
         return res.status(401).send('cant.on.your.own.product');
       }
 
       Enchere.findOne({
-        produit: req.body.produit,
+        produit: req.params.id,
       }, (err, enchere) => {
         if (err) {
           return res.status(500).send();
@@ -27,7 +28,7 @@ module.exports = (api) => {
           return res.status(401).send('amount.is.less.than.zero');
         }
 
-        if (enchere.encherisseur == req.userId) {
+        if (enchere && enchere.encherisseur.toString() == req.userId) {
           return res.status(401).send('you.already.have.this.auction')
         }
 
@@ -44,14 +45,14 @@ module.exports = (api) => {
             let enchere  = new Enchere(req.body);
             enchere.date = Date.now();
             enchere.encherisseur = req.userId;
-
+            enchere.produit = req.params.id;
             enchere.save((err, data) => {
               if (err) {
                 return res.status(500).send(err);
               }
               return res.send(data);
             });
-          }
+          } else {
 
           if (req.body.montant <= enchere.montant) {
             return res.status(401).send('amount.is.less.than.the.one.already.in.place');
@@ -94,6 +95,7 @@ module.exports = (api) => {
               });
             });
           });
+        }
         });
       });
     });

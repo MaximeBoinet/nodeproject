@@ -1,5 +1,5 @@
 module.exports = (api) => {
-  const Produit = api.models.Enchere;
+  const Produit = api.models.Produit;
 
   return function create(req, res, next) {
     Produit.findById(req.params.id, (err, produit) => {
@@ -11,7 +11,7 @@ module.exports = (api) => {
         return res.status(403).send('id.not.found');
       }
 
-      if (produit.acheteur != req.userId) {
+      if (produit.acheteur.toString() != req.userId) {
         return res.status(403).send('not.your.deal');
       }
 

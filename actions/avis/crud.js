@@ -82,37 +82,31 @@ module.exports = (api) => {
   }
 
   function findAllFromSeller(req, res, next) {
-      setTimeout(getAvis, 3000);
-      function getAvis() {
-          User.find({
-            recepteur: req.params.id,
-          },(err, data) => {
-              if (err) {
-                  return res.status(500).send(err);
-              }
-              if (!data || data.length == 0) {
-                  return res.status(204).send(data)
-              }
-              return res.send(data);
-          });
-      }
+      User.find({
+        recepteur: req.params.id,
+      },(err, data) => {
+          if (err) {
+              return res.status(500).send(err);
+          }
+          if (!data || data.length == 0) {
+              return res.status(204).send(data)
+          }
+          return res.send(data);
+      });
   }
 
   function findAllFromBuyer(req, res, next) {
-      setTimeout(getAvis, 3000);
-      function getAvis() {
-          User.find({
-            emeteur: req.params.id,
-          },(err, data) => {
-              if (err) {
-                  return res.status(500).send(err);
-              }
-              if (!data || data.length == 0) {
-                  return res.status(204).send(data)
-              }
-              return res.send(data);
-          });
-      }
+      User.find({
+        emeteur: req.params.id,
+      },(err, data) => {
+          if (err) {
+              return res.status(500).send(err);
+          }
+          if (!data || data.length == 0) {
+              return res.status(204).send(data)
+          }
+          return res.send(data);
+      });
   }
 
   function update(req, res, next) {
@@ -129,7 +123,7 @@ module.exports = (api) => {
           return res.status(401).send('not.your.avis');
       }
 
-      data = req.body;
+      data.description = req.body.description;
 
       data.save((err, data) => {
         if (err) {
