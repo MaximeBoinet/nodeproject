@@ -54,7 +54,7 @@ module.exports = (api) => {
     }
 
     function findAll(req, res, next) {
-        setTimeout(getUsers, 3000);
+        setTimeout(getUsers, 2000);
         function getUsers() {
             User.find((err, data) => {
                 if (err) {
@@ -70,7 +70,7 @@ module.exports = (api) => {
     }
 
     function findAllSeller(req, res, next) {
-        setTimeout(getUsers, 3000);
+        setTimeout(getUsers, 2000);
         function getUsers() {
             User.find({
               isVendor: true,

@@ -8,7 +8,7 @@ module.exports = (api) => {
         let produit = new Produit(req.body);
 
         if (produit.produitprix <= 0) {
-          return res.status(401).send('price.cant.be.less.or.equal.zero');
+          return res.status(403).send('price.cant.be.less.or.equal.zero');
         }
         User.findOne(req.userId, (err, user) => {
           if (err) {

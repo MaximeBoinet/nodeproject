@@ -10,6 +10,12 @@ module.exports = (api) => {
 
     router.get('/selled',
         api.middlewares.ensureAuthenticated,
+        api.middlewares.ensureGbayStaff,
+        api.actions.produits.findAllSelled);
+
+    router.get('/selled/:id',
+        api.middlewares.ensureAuthenticated,
+        api.middlewares.ensureGbayStaff,
         api.actions.produits.findAllSelled);
 
     router.get('/cat/:cat',

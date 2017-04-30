@@ -29,8 +29,7 @@ module.exports = (api) => {
         },
         vendeur: {
             type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
+            ref: 'User'
         },
         acheteur: {
             type: Schema.Types.ObjectId,
