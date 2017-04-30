@@ -6,6 +6,7 @@ module.exports = (api) => {
     api.actions.users.findAll);
 
   router.get('/seller',
+    api.middlewares.cache.get,
     api.actions.users.findAllSeller);
 
   router.get('/:id',

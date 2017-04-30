@@ -44,17 +44,20 @@ module.exports = (api) => {
     }
 
     function findAll(req, res, next) {
-        Produit.find((err, data) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            if (!data || data.length == 0) {
-                return res.status(204).send(data)
-            }
+      setTimeout(getProduit, 2000);
+      function getProduit() {
+          Produit.find((err, data) => {
+              if (err) {
+                  return res.status(500).send(err);
+              }
+              if (!data || data.length == 0) {
+                  return res.status(204).send(data)
+              }
 
-            api.middlewares.cache.set('Produit', data, req.originalUrl);
-            return res.send(data);
-        });
+              api.middlewares.cache.set('Produit', data, req.originalUrl);
+              return res.send(data);
+          });
+        }
     }
 
     function findAllSorted(req, res, next) {
@@ -67,7 +70,7 @@ module.exports = (api) => {
             }
 
             return res.send(data);
-        }).sort({produitprix: 1});
+        }).sort({produitprix: req.params.indice});
     }
 
     function findAllBound(req, res, next) {
